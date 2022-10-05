@@ -8,3 +8,8 @@ export const authState = atom<UserProfile>({
     userName: '',
   },
 });
+
+export const themeState = atom({
+  key: 'isDark',
+  default: false,
+});
