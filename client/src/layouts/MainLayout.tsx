@@ -1,5 +1,10 @@
-import { StyledContainer } from './style';
+import { Header } from 'components';
+import { Container } from './style';
 
 export const MainLayout = () => {
-  return <StyledContainer></StyledContainer>;
+  return (
+    <Container>
+      <Header />
+    </Container>
+  );
 };
