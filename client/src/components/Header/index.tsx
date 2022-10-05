@@ -1,5 +1,5 @@
 import { authState, themeState } from 'store/atoms';
-import { Aside, Container } from './style';
+import { Aside, Title } from './style';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useMatch, useNavigate } from 'react-router-dom';
 
@@ -19,10 +19,13 @@ export const Header = () => {
     setProfile({ email: '', userName: '' });
     navigate('/auth/signin');
   };
+  console.log(mainPage);
 
   return (
-    <Container>
-      <h1>{signupPage ? '회원가입' : signinPage ? '로그인' : '📝 To Do List'}</h1>
+    <header>
+      <Title main={mainPage ? true : false}>
+        {signupPage ? '회원가입' : signinPage ? '로그인' : '📝 To Do List'}
+      </Title>
       <Aside>
         <button className="theme__btn" onClick={onToggleThemeMode}>
           <span className="theme__icon">{isDark ? '☀️' : '🌙'}</span>
@@ -34,6 +37,6 @@ export const Header = () => {
           </button>
         )}
       </Aside>
-    </Container>
+    </header>
   );
 };

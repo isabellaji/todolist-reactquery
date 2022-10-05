@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
-  padding: 5em 0;
-  h1 {
-    font-size: 3em;
-    font-weight: 600;
-    text-align: center;
-  }
+export const Title = styled.h1<{ main: boolean }>`
+  font-size: ${(props) => (props.main ? '3em' : '1.4rem')};
+  font-weight: 600;
+  text-align: center;
+  padding: ${(props) => (props.main ? '5rem 0' : '3em 0')};
 `;
 
 export const Aside = styled.div`

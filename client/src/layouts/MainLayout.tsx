@@ -1,10 +1,15 @@
 import { Header } from 'components';
 import { Container } from './style';
 
-export const MainLayout = () => {
+interface MainLayoutProps {
+  children: React.ReactNode;
+}
+
+export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <Container>
       <Header />
+      {children}
     </Container>
   );
 };

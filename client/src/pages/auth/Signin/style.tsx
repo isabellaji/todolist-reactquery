@@ -3,14 +3,8 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 100%;
   max-width: 500px;
-  padding: 3em 1em 0;
+  padding: 0 1em;
   margin: 0 auto;
-  h1 {
-    font-size: 1.4rem;
-    font-weight: 500;
-    text-align: center;
-    padding: 2em 0;
-  }
 `;
 
 export const FormBox = styled.div`
@@ -50,7 +44,7 @@ export const Form = styled.form`
     font-weight: 600;
     border-radius: 0.3rem;
     border: 0;
-    color: ${(props) => props.theme.textColor};
+    color: #dcdde1;
     background-color: ${(props) => props.theme.accentColor};
     transition: 0.1s ease-in-out;
     cursor: pointer;
@@ -76,11 +70,11 @@ export const SignupBtn = styled.button`
   font-weight: 600;
   border-radius: 0.3rem;
   border: 0;
-  color: ${(props) => props.theme.accentColor};
-  background-color: ${(props) => props.theme.textColor};
+  color: #dcdde1;
+  background-color: #2f3640;
   transition: 0.1s ease-in-out;
   cursor: pointer;
   &:hover {
-    background-color: #ffffff;
+    background-color: #232729;
   }
 `;
