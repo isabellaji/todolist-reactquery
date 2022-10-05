@@ -1,7 +1,7 @@
 import { authAPI } from 'apis/auth';
 import { authState } from 'store/atoms';
 import { Container, Form, FormBox, SignupBtn } from './style';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -41,6 +41,11 @@ export const SigninPage = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('todos');
+    token && navigate('/');
+  });
 
   return (
     <Container>
