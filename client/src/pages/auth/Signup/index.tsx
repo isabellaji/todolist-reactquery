@@ -26,13 +26,13 @@ export const SignupPage = () => {
   const onValid = async ({ email, password, userName }: FromData) => {
     setSignupError('');
     try {
-      const accessToken = await authAPI.signup({
+      const user = await authAPI.signup({
         email,
         password,
         userName,
       });
 
-      window.sessionStorage.setItem('todos', accessToken.token);
+      window.sessionStorage.setItem('todos', user.token);
       setProfile({ email: email, userName: userName });
       navigate('/');
     } catch (error) {

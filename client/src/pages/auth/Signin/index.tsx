@@ -1,9 +1,11 @@
 import { authAPI } from 'apis/auth';
+import { authState } from 'store/atoms';
 import { Container, Form, FormBox, SignupBtn } from './style';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 
 interface FromData {
   email: string;
@@ -12,6 +14,7 @@ interface FromData {
 
 export const SigninPage = () => {
   const [signinError, setSigninError] = useState('');
+  const setProfile = useSetRecoilState(authState);
   const navigate = useNavigate();
   const {
     register,
@@ -25,11 +28,12 @@ export const SigninPage = () => {
   const onValid = async ({ email, password }: FromData) => {
     setSigninError('');
     try {
-      const accessToken = await authAPI.signin({
+      const user = await authAPI.signin({
         email,
         password,
       });
-      window.sessionStorage.setItem('todos', accessToken.token);
+      window.sessionStorage.setItem('todos', user.token);
+      setProfile({ email: email, userName: user.userName });
       navigate('/');
     } catch (error) {
       if (error instanceof AxiosError) {
