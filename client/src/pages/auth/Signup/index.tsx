@@ -1,17 +1,21 @@
 import { authAPI } from 'apis/auth';
-import { Container, Form, FormBox, SignupBtn } from './style';
+import { authState } from 'store/atoms';
+import { Container, Form, FormBox } from './style';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 
 interface FromData {
   email: string;
   password: string;
+  userName: string;
 }
 
-export const SigninPage = () => {
-  const [signinError, setSigninError] = useState('');
+export const SignupPage = () => {
+  const [signupError, setSignupError] = useState('');
+  const setProfile = useSetRecoilState(authState);
   const navigate = useNavigate();
   const {
     register,
@@ -19,36 +23,44 @@ export const SigninPage = () => {
     formState: { errors },
   } = useForm<FromData>();
 
-  const onClickSignup = () => {
-    navigate('/auth/signup');
-  };
-  const onValid = async ({ email, password }: FromData) => {
-    setSigninError('');
+  const onValid = async ({ email, password, userName }: FromData) => {
+    setSignupError('');
     try {
-      const accessToken = await authAPI.signin({
+      const accessToken = await authAPI.signup({
         email,
         password,
+        userName,
       });
+
       window.sessionStorage.setItem('todos', accessToken.token);
+      setProfile({ email: email, userName: userName });
       navigate('/');
     } catch (error) {
       if (error instanceof AxiosError) {
-        setSigninError(`❎ ${error.response?.data.details}`);
+        setSignupError(`❎ ${error.response?.data.details}`);
       }
     }
   };
-
   return (
     <Container>
-      <h1>로그인</h1>
+      <h1>회원가입</h1>
       <FormBox>
         <Form onSubmit={handleSubmit(onValid)}>
+          <div className="form__list">
+            <label>이름</label>
+            <input
+              {...register('userName', { required: true })}
+              type="text"
+              autoComplete="off"
+              placeholder="이름을 입력해 주세요"
+            />
+            <p className="error__msg">{errors?.userName?.message}</p>
+          </div>
           <div className="form__list">
             <label>이메일</label>
             <input
               {...register('email', {
                 required: true,
-
                 pattern: {
                   value: /[\w-_.]+\@[\w]+\.[\w.]+/,
                   message: '이메일 형식에 맞게 입력해 주세요',
@@ -76,10 +88,9 @@ export const SigninPage = () => {
             />
             <p className="error__msg">{errors?.password?.message}</p>
           </div>
-          <p className="error__msg signin-err">{signinError}</p>
-          <button className="submit__btn">로그인</button>
+          <p className="error__msg signup-err">{signupError}</p>
+          <button className="submit__btn">회원가입하기</button>
         </Form>
-        <SignupBtn onClick={onClickSignup}>회원가입</SignupBtn>
       </FormBox>
     </Container>
   );
