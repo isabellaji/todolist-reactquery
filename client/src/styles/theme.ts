@@ -6,7 +6,7 @@ export const lightTheme: DefaultTheme = {
   textColor: '#2d3436',
   accentColor: '#6c5ce7',
   subAccentColor: '#00b894',
-  borderColor: '#71809398',
+  borderColor: '#b2bec350',
 };
 
 export const darkTheme: DefaultTheme = {
@@ -15,5 +15,5 @@ export const darkTheme: DefaultTheme = {
   textColor: '#dcdde1',
   accentColor: '#6c5ce7',
   subAccentColor: '#00b894',
-  borderColor: '#71809398',
+  borderColor: '#b2bec350',
 };
