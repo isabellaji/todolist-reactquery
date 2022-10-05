@@ -19,7 +19,6 @@ export const Header = () => {
     setProfile({ email: '', userName: '' });
     navigate('/auth/signin');
   };
-  console.log(mainPage);
 
   return (
     <header>
