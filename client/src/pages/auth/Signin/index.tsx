@@ -32,7 +32,7 @@ export const SigninPage = () => {
         email,
         password,
       });
-      window.sessionStorage.setItem('todos', user.token);
+      window.localStorage.setItem('todos', user.token);
       setProfile({ email: email, userName: user.userName });
       navigate('/');
     } catch (error) {
