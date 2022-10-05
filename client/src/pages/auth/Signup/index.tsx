@@ -32,7 +32,7 @@ export const SignupPage = () => {
         userName,
       });
 
-      window.sessionStorage.setItem('todos', user.token);
+      window.localStorage.setItem('todos', user.token);
       setProfile({ email: email, userName: userName });
       navigate('/');
     } catch (error) {
@@ -41,6 +41,7 @@ export const SignupPage = () => {
       }
     }
   };
+
   return (
     <Container>
       <h1>회원가입</h1>
