@@ -1,18 +1,13 @@
 import { authAPI } from 'apis/auth';
 import { authState } from 'store/atoms';
 import { MainLayout } from 'layouts';
+import { RequestSignup } from 'types/auth';
 import { Container, Form, FormBox } from './style';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-
-interface FromData {
-  email: string;
-  password: string;
-  userName: string;
-}
 
 export const SignupPage = () => {
   const [signupError, setSignupError] = useState('');
@@ -22,9 +17,9 @@ export const SignupPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FromData>();
+  } = useForm<RequestSignup>();
 
-  const onValid = async ({ email, password, userName }: FromData) => {
+  const onValid = async ({ email, password, userName }: RequestSignup) => {
     setSignupError('');
     try {
       const user = await authAPI.signup({
@@ -33,7 +28,7 @@ export const SignupPage = () => {
         userName,
       });
 
-      window.localStorage.setItem('todos', user.token);
+      localStorage.setItem('todos', user.token);
       setProfile({ email: email, userName: userName });
       navigate('/');
     } catch (error) {
@@ -55,6 +50,7 @@ export const SignupPage = () => {
                 type="text"
                 autoComplete="off"
                 placeholder="이름을 입력해 주세요"
+                autoFocus
               />
               <p className="error__msg">{errors?.userName?.message}</p>
             </div>

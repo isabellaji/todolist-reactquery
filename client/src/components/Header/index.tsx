@@ -1,5 +1,5 @@
 import { authState, themeState } from 'store/atoms';
-import { Aside, Title } from './style';
+import { Aside, StyledHeader, Title } from './style';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useMatch, useNavigate } from 'react-router-dom';
 
@@ -15,13 +15,13 @@ export const Header = () => {
     setIsDark((prev) => !prev);
   };
   const onClickSignout = () => {
-    window.localStorage.removeItem('todos');
+    localStorage.removeItem('todos');
     setProfile({ email: '', userName: '' });
     navigate('/auth/signin');
   };
 
   return (
-    <header>
+    <StyledHeader>
       <Title main={mainPage ? true : false}>
         {signupPage ? '회원가입' : signinPage ? '로그인' : '📝 To Do List'}
       </Title>
@@ -36,6 +36,6 @@ export const Header = () => {
           </button>
         )}
       </Aside>
-    </header>
+    </StyledHeader>
   );
 };

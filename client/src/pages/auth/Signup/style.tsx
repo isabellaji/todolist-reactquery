@@ -44,7 +44,7 @@ export const Form = styled.form`
     font-weight: 600;
     border-radius: 0.3rem;
     border: 0;
-    color: #dcdde1;
+    color: #f5f6fa;
     background-color: ${(props) => props.theme.accentColor};
     transition: 0.1s ease-in-out;
     cursor: pointer;

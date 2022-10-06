@@ -1,17 +1,13 @@
 import { authAPI } from 'apis/auth';
 import { authState } from 'store/atoms';
 import { MainLayout } from 'layouts';
+import { RequestSignin } from 'types/auth';
 import { Container, Form, FormBox, SignupBtn } from './style';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-
-interface FromData {
-  email: string;
-  password: string;
-}
 
 export const SigninPage = () => {
   const [signinError, setSigninError] = useState('');
@@ -21,19 +17,19 @@ export const SigninPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FromData>();
+  } = useForm<RequestSignin>();
 
   const onClickSignup = () => {
     navigate('/auth/signup');
   };
-  const onValid = async ({ email, password }: FromData) => {
+  const onValid = async ({ email, password }: RequestSignin) => {
     setSigninError('');
     try {
       const user = await authAPI.signin({
         email,
         password,
       });
-      window.localStorage.setItem('todos', user.token);
+      localStorage.setItem('todos', user.token);
       setProfile({ email: email, userName: user.userName });
       navigate('/');
     } catch (error) {
@@ -44,7 +40,7 @@ export const SigninPage = () => {
   };
 
   useEffect(() => {
-    const token = window.localStorage.getItem('todos');
+    const token = localStorage.getItem('todos');
     token && navigate('/');
   });
 
@@ -67,6 +63,7 @@ export const SigninPage = () => {
                 type="text"
                 autoComplete="off"
                 placeholder="이메일을 입력해 주세요"
+                autoFocus
               />
               <p className="error__msg">{errors?.email?.message}</p>
             </div>
