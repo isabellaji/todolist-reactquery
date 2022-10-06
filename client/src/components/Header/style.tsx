@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 
+export const StyledHeader = styled.header`
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const Title = styled.h1<{ main: boolean }>`
-  font-size: ${(props) => (props.main ? '3em' : '1.4rem')};
+  font-size: ${(props) => (props.main ? '2.6em' : '1.4rem')};
   font-weight: 600;
-  text-align: center;
-  padding: ${(props) => (props.main ? '5rem 0' : '3em 0')};
 `;
 
 export const Aside = styled.div`
