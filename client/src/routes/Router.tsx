@@ -7,6 +7,7 @@ const Router = () => {
       <Route path="/auth/signin" element={<SigninPage />} />
       <Route path="/auth/signup" element={<SignupPage />} />
       <Route path="/" element={<TodoPage />} />
+      <Route path="/:id" element={<TodoPage />} />
     </Routes>
   );
 };

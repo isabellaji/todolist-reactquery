@@ -3,10 +3,14 @@ export interface RequestTodo {
   content: string;
 }
 
+export interface RequestTodoWId extends RequestTodo {
+  id: string;
+}
+
 export interface ResponseTodo {
   title: string;
   content: string;
   id: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
