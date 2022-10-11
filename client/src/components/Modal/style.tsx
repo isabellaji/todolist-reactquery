@@ -55,8 +55,8 @@ export const Form = styled.form`
 
 export const CloseBtn = styled.button`
   position: absolute;
-  top: 1.3em;
-  right: 1.1em;
+  top: 1.5em;
+  right: 1.3em;
   border: 0;
   font-size: 1.5em;
   background-color: transparent;

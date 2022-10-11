@@ -1,27 +1,89 @@
-import { RequestTodo } from 'types/todo';
-import { todoAPI } from 'apis/toso';
+import { todoAPI } from 'apis/todo';
+import { RequestTodo, RequestTodoWId } from 'types/todo';
 import { CloseBtn, Container, Form } from './style';
-import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
+import { useForm } from 'react-hook-form';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 interface ModalProps {
   modalVisible: boolean;
-  onCancle: () => void;
+  setModalVisivle: (v: boolean) => void;
+  currentTodo: RequestTodoWId;
+  isEdit: boolean;
+  setIsEdit: (v: boolean) => void;
 }
 
-export const Modal = ({ modalVisible, onCancle }: ModalProps) => {
-  const { register, handleSubmit } = useForm<RequestTodo>();
+export const Modal = ({
+  modalVisible,
+  setModalVisivle,
+  currentTodo,
+  isEdit,
+  setIsEdit,
+}: ModalProps) => {
+  const queryClient = useQueryClient();
+  const { register, handleSubmit, setValue } = useForm<RequestTodo>();
 
-  const onValid = async ({ title, content }: RequestTodo) => {
+  const createTodo = async (newTodo: RequestTodo) => {
     try {
-      await todoAPI.create({ title, content });
-      onCancle();
+      const newData = await todoAPI.create(newTodo);
+      return newData;
     } catch (error) {
       if (error instanceof AxiosError) {
         alert(error);
       }
+    } finally {
+      handleCloseModal();
     }
   };
+
+  const CreateMutation = useMutation(createTodo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['todos']);
+    },
+  });
+
+  const updateTodo = async (newTodo: RequestTodoWId) => {
+    try {
+      const newData = await todoAPI.update(newTodo);
+      return newData;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        alert(error);
+      }
+    } finally {
+      handleCloseModal();
+    }
+  };
+
+  const UpdateMutation = useMutation(updateTodo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['todos']);
+    },
+  });
+
+  const handleCloseModal = () => {
+    setModalVisivle(false);
+    setIsEdit(false);
+    setValue('title', '');
+    setValue('content', '');
+  };
+
+  const onValid = ({ title, content }: RequestTodo) => {
+    if (isEdit) {
+      UpdateMutation.mutate({ title, content, id: currentTodo.id });
+      setIsEdit(false);
+    } else {
+      CreateMutation.mutate({ title, content });
+    }
+  };
+
+  useEffect(() => {
+    if (isEdit) {
+      setValue('title', currentTodo.title);
+      setValue('content', currentTodo.content);
+    }
+  }, [isEdit]);
 
   return (
     <>
@@ -37,8 +99,8 @@ export const Modal = ({ modalVisible, onCancle }: ModalProps) => {
                 autoFocus
               />
               <textarea {...register('content', { required: true })} placeholder="Description" />
-              <button className="submit__btn">저장</button>
-              <CloseBtn onClick={onCancle}>❌</CloseBtn>
+              <button className="submit__btn">{isEdit ? '수정' : '저장'}</button>
+              <CloseBtn onClick={handleCloseModal}>❌</CloseBtn>
             </Form>
           </div>
         </Container>
