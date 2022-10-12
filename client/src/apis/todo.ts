@@ -19,24 +19,16 @@ todoInstance.interceptors.request.use((config) => {
 
 export const todoAPI = {
   get: (): Promise<ResponseTodo[]> => {
-    return todoInstance.get('/todos').then((res) => {
-      return res.data.data;
-    });
+    return todoInstance.get('/todos').then((res) => res.data.data);
   },
   getById: (id?: string): Promise<ResponseTodo> => {
-    return todoInstance.get(`/todos/${id}`).then((res) => {
-      return res.data.data;
-    });
+    return todoInstance.get(`/todos/${id}`).then((res) => res.data.data);
   },
   create: (data: RequestTodo): Promise<ResponseTodo> => {
-    return todoInstance.post('/todos', data).then((res) => {
-      return res.data.data;
-    });
+    return todoInstance.post('/todos', data).then((res) => res.data.data);
   },
   update: (data: RequestTodoWId): Promise<ResponseTodo> => {
-    return todoInstance.put(`/todos/${data.id}`, data).then((res) => {
-      return res.data.data;
-    });
+    return todoInstance.put(`/todos/${data.id}`, data).then((res) => res.data.data);
   },
   delete: (id: string) => {
     return todoInstance.delete(`/todos/${id}`).then((res) => res.data);

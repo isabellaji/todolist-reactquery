@@ -1,3 +1,4 @@
+import React from 'react';
 import { authState, themeState } from 'store/atoms';
 import { Aside, StyledHeader, Title } from './style';
 import { useRecoilState, useSetRecoilState } from 'recoil';
@@ -8,7 +9,7 @@ export const Header = () => {
   const setProfile = useSetRecoilState(authState);
   const signupPage = useMatch('/auth/signup');
   const signinPage = useMatch('/auth/signin');
-  const mainPage = useMatch('/');
+  const mainPage = useMatch('/*');
   const navigate = useNavigate();
 
   const onToggleThemeMode = () => {

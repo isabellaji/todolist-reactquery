@@ -1,9 +1,9 @@
+import React, { useState } from 'react';
 import { Modal } from 'components';
 import { RequestTodoWId, ResponseTodo } from 'types/todo';
 import { todoAPI } from 'apis/todo';
 import { MainLayout } from 'layouts';
 import { Container, CreateBtn, DescriptionSection, ListItem, ListSection, Loader } from './style';
-import React, { useState } from 'react';
 import { AxiosError } from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useMatch } from 'react-router-dom';
@@ -15,12 +15,12 @@ export const TodoPage = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [editTodo, setEditTodo] = useState<RequestTodoWId>();
   const [modalVisible, setModalVisivle] = useState(false);
-  const { data, isLoading: todoListLoading } = useQuery<ResponseTodo[]>(['todos'], todoAPI.get);
-  const { data: currentTodo, isLoading: todoItemLoading } = useQuery<ResponseTodo>(
+  const { data, isLoading } = useQuery<ResponseTodo[]>(['todos'], todoAPI.get);
+  const { data: currentTodo } = useQuery<ResponseTodo>(
     ['todo', path],
-    () => todoAPI.getById(path)
+    () => todoAPI.getById(path),
+    { enabled: !!path }
   );
-  const isLoading = todoListLoading || todoItemLoading;
 
   const handleOpenModal = () => {
     setModalVisivle(true);
@@ -89,11 +89,7 @@ export const TodoPage = () => {
         </ListSection>
         <DescriptionSection>
           <h2>Description</h2>
-          {isLoading ? (
-            <Loader>Loading...🌀</Loader>
-          ) : (
-            currentTodo && <pre className="description__item">{currentTodo.content}</pre>
-          )}
+          {currentTodo && <pre className="description__item">{currentTodo.content}</pre>}
         </DescriptionSection>
       </Container>
       <Modal
