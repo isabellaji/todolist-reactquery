@@ -1,5 +1,5 @@
 import { todoAPI } from 'apis/todo';
-import { RequestTodo, RequestTodoWId } from 'types/todo';
+import { RequestTodo, RequestTodoWId, ResponseTodo } from 'types/todo';
 import { CloseBtn, Container, Form } from './style';
 import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 interface ModalProps {
   modalVisible: boolean;
   setModalVisivle: (v: boolean) => void;
-  currentTodo: RequestTodoWId;
+  editTodo?: RequestTodoWId;
   isEdit: boolean;
   setIsEdit: (v: boolean) => void;
 }
@@ -17,7 +17,7 @@ interface ModalProps {
 export const Modal = ({
   modalVisible,
   setModalVisivle,
-  currentTodo,
+  editTodo,
   isEdit,
   setIsEdit,
 }: ModalProps) => {
@@ -70,8 +70,8 @@ export const Modal = ({
   };
 
   const onValid = ({ title, content }: RequestTodo) => {
-    if (isEdit) {
-      UpdateMutation.mutate({ title, content, id: currentTodo.id });
+    if (isEdit && editTodo) {
+      UpdateMutation.mutate({ title, content, id: editTodo?.id });
       setIsEdit(false);
     } else {
       CreateMutation.mutate({ title, content });
@@ -79,9 +79,9 @@ export const Modal = ({
   };
 
   useEffect(() => {
-    if (isEdit) {
-      setValue('title', currentTodo.title);
-      setValue('content', currentTodo.content);
+    if (isEdit && editTodo) {
+      setValue('title', editTodo?.title);
+      setValue('content', editTodo?.content);
     }
   }, [isEdit]);
 

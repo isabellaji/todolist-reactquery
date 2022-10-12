@@ -1,38 +1,34 @@
 import { Modal } from 'components';
 import { RequestTodoWId, ResponseTodo } from 'types/todo';
 import { todoAPI } from 'apis/todo';
-import { todoState } from 'store/atoms';
 import { MainLayout } from 'layouts';
 import { Container, CreateBtn, DescriptionSection, ListItem, ListSection, Loader } from './style';
-import React, { useEffect, useState } from 'react';
-import { useRecoilState, useResetRecoilState } from 'recoil';
+import React, { useState } from 'react';
 import { AxiosError } from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useMatch } from 'react-router-dom';
 
 export const TodoPage = () => {
   const match = useMatch('/*');
+  const path = match?.params['*'];
   const queryClient = useQueryClient();
   const [isEdit, setIsEdit] = useState(false);
+  const [editTodo, setEditTodo] = useState<RequestTodoWId>();
   const [modalVisible, setModalVisivle] = useState(false);
-  const [currentTodo, setCurrentTodo] = useRecoilState<RequestTodoWId>(todoState);
-  const resetCurrentTodo = useResetRecoilState(todoState);
-  const { data, isLoading } = useQuery<ResponseTodo[]>(['todos'], todoAPI.get);
+  const { data, isLoading: todoListLoading } = useQuery<ResponseTodo[]>(['todos'], todoAPI.get);
+  const { data: currentTodo, isLoading: todoItemLoading } = useQuery<ResponseTodo>(
+    ['todo', path],
+    () => todoAPI.getById(path)
+  );
+  const isLoading = todoListLoading || todoItemLoading;
 
   const handleOpenModal = () => {
     setModalVisivle(true);
   };
 
-  const handleCurrentTodo = (todo: RequestTodoWId) => {
-    setCurrentTodo(todo);
-  };
-
   const deleteTodo = async (id: string) => {
     try {
       await todoAPI.delete(id);
-      if (id === currentTodo.id) {
-        resetCurrentTodo();
-      }
     } catch (error) {
       if (error instanceof AxiosError) {
         alert(error);
@@ -51,7 +47,8 @@ export const TodoPage = () => {
     deleteMutation.mutate(id);
   };
 
-  const handleEditTodo = () => {
+  const handleEditTodo = (todo: RequestTodoWId) => {
+    setEditTodo(todo);
     setIsEdit(true);
     setModalVisivle(true);
   };
@@ -69,14 +66,16 @@ export const TodoPage = () => {
                 <ListItem
                   className="list__item"
                   key={todo.id}
-                  isClicked={match?.params['*'] === todo.id ? true : false}
-                  // onClick={() =>
-                  //   handleCurrentTodo({ id: todo.id, title: todo.title, content: todo.content })
-                  // }
+                  isClicked={path === todo.id ? true : false}
                 >
                   <Link to={`/${todo.id}`}>{todo.title}</Link>
                   <div className="item__utils">
-                    <button className="edit__btn" onClick={() => handleEditTodo()}>
+                    <button
+                      className="edit__btn"
+                      onClick={() =>
+                        handleEditTodo({ id: todo.id, title: todo.title, content: todo.content })
+                      }
+                    >
                       ✏️
                     </button>
                     <button className="remove__btn" onClick={(e) => handleDeleteTodo(todo.id, e)}>
@@ -90,13 +89,17 @@ export const TodoPage = () => {
         </ListSection>
         <DescriptionSection>
           <h2>Description</h2>
-          {currentTodo.content && <pre className="description__item">{currentTodo.content}</pre>}
+          {isLoading ? (
+            <Loader>Loading...🌀</Loader>
+          ) : (
+            currentTodo && <pre className="description__item">{currentTodo.content}</pre>
+          )}
         </DescriptionSection>
       </Container>
       <Modal
         modalVisible={modalVisible}
         setModalVisivle={setModalVisivle}
-        currentTodo={currentTodo}
+        editTodo={editTodo}
         isEdit={isEdit}
         setIsEdit={setIsEdit}
       />
