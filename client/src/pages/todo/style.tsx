@@ -29,6 +29,7 @@ export const ListItem = styled.li<{ isClicked: boolean }>`
   justify-content: space-between;
   border-radius: 0.5rem;
   background-color: ${(props) => (props.isClicked ? props.theme.accentColor : props.theme.bgColor)};
+  color: ${(props) => (props.isClicked ? '#dcdde1' : props.theme.textColor)};
   border: 1px solid ${(props) => props.theme.borderColor};
   transition: 0.1s ease-in-out;
 

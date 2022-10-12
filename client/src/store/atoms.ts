@@ -28,13 +28,3 @@ export const themeState = atom({
   default: false,
   effects: [localStorageEffect('isDark')],
 });
-
-export const todoState = atom<ResponseTodo>({
-  key: 'currentTodo',
-  effects: [localStorageEffect('currentTodo')],
-  default: {
-    id: '',
-    title: '',
-    content: '',
-  },
-});

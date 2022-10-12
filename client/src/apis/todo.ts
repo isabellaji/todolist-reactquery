@@ -23,7 +23,7 @@ export const todoAPI = {
       return res.data.data;
     });
   },
-  getById: (id: string): Promise<ResponseTodo> => {
+  getById: (id?: string): Promise<ResponseTodo> => {
     return todoInstance.get(`/todos/${id}`).then((res) => {
       return res.data.data;
     });
