@@ -1,9 +1,9 @@
+import React, { useEffect, useState } from 'react';
 import { authAPI } from 'apis/auth';
 import { authState } from 'store/atoms';
 import { MainLayout } from 'layouts';
 import { RequestSignin } from 'types/auth';
 import { Container, Form, FormBox, SignupBtn } from './style';
-import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';

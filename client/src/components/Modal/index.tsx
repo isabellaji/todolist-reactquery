@@ -1,10 +1,10 @@
+import React, { useEffect } from 'react';
 import { todoAPI } from 'apis/todo';
-import { RequestTodo, RequestTodoWId, ResponseTodo } from 'types/todo';
+import { RequestTodo, RequestTodoWId } from 'types/todo';
 import { CloseBtn, Container, Form } from './style';
 import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
 
 interface ModalProps {
   modalVisible: boolean;
