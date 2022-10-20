@@ -9,7 +9,6 @@ export const Header = () => {
   const [profile, setProfile] = useRecoilState(authState);
   const signupPage = useMatch('/auth/signup');
   const signinPage = useMatch('/auth/signin');
-  const mainPage = useMatch('/:id');
   const navigate = useNavigate();
 
   const onToggleThemeMode = () => {
@@ -24,7 +23,7 @@ export const Header = () => {
 
   return (
     <StyledHeader>
-      <Title main={mainPage ? true : false}>
+      <Title main={!signupPage && !signinPage ? true : false}>
         {signupPage ? '회원가입' : signinPage ? '로그인' : `📝 ${profile.userName}'s To Do List`}
       </Title>
       <Aside>
@@ -32,7 +31,7 @@ export const Header = () => {
           <span className="theme__icon">{isDark ? '☀️' : '🌙'}</span>
           <span className="theme__text">{isDark ? 'Light' : 'Dark'}</span>
         </button>
-        {mainPage && (
+        {!signupPage && !signinPage && (
           <button className="signout__btn" onClick={onClickSignout}>
             로그아웃
           </button>
