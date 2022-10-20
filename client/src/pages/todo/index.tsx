@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { Modal } from 'components';
+import { ListItem, Modal } from 'components';
 import { RequestTodoWId, ResponseTodo } from 'types/todo';
 import { todoAPI } from 'apis/todo';
 import { MainLayout } from 'layouts';
-import { Container, CreateBtn, DescriptionSection, ListItem, ListSection, Loader } from './style';
-import { AxiosError } from 'axios';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Link, useMatch } from 'react-router-dom';
+import { Container, CreateBtn, DescriptionSection, ListSection, Loader } from './style';
+import { useQuery } from '@tanstack/react-query';
+import { useMatch } from 'react-router-dom';
 
 export const TodoPage = () => {
   const match = useMatch('/*');
   const path = match?.params['*'];
-  const queryClient = useQueryClient();
   const [isEdit, setIsEdit] = useState(false);
   const [editTodo, setEditTodo] = useState<RequestTodoWId>();
   const [modalVisible, setModalVisivle] = useState(false);
@@ -26,33 +24,6 @@ export const TodoPage = () => {
     setModalVisivle(true);
   };
 
-  const deleteTodo = async (id: string) => {
-    try {
-      await todoAPI.delete(id);
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        alert(error);
-      }
-    }
-  };
-
-  const deleteMutation = useMutation(deleteTodo, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['todos']);
-    },
-  });
-
-  const handleDeleteTodo = (id: string, event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    deleteMutation.mutate(id);
-  };
-
-  const handleEditTodo = (todo: RequestTodoWId) => {
-    setEditTodo(todo);
-    setIsEdit(true);
-    setModalVisivle(true);
-  };
-
   return (
     <MainLayout>
       <Container>
@@ -64,25 +35,13 @@ export const TodoPage = () => {
             ) : (
               data?.map((todo) => (
                 <ListItem
-                  className="list__item"
                   key={todo.id}
-                  isClicked={path === todo.id ? true : false}
-                >
-                  <Link to={`/${todo.id}`}>{todo.title}</Link>
-                  <div className="item__utils">
-                    <button
-                      className="edit__btn"
-                      onClick={() =>
-                        handleEditTodo({ id: todo.id, title: todo.title, content: todo.content })
-                      }
-                    >
-                      ✏️
-                    </button>
-                    <button className="remove__btn" onClick={(e) => handleDeleteTodo(todo.id, e)}>
-                      ❎
-                    </button>
-                  </div>
-                </ListItem>
+                  todo={todo}
+                  path={path}
+                  setEditTodo={setEditTodo}
+                  setIsEdit={setIsEdit}
+                  setModalVisivle={setModalVisivle}
+                />
               ))
             )}
           </ul>
