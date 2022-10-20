@@ -20,15 +20,18 @@ export const TodoPage = () => {
     () => todoAPI.getById(path),
     { enabled: !!path }
   );
+  const token = localStorage.getItem('todos');
 
   const handleOpenModal = () => {
     setModalVisivle(true);
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('todos');
-    !token && navigate('/auth/signin');
-  }, [navigate]);
+    if (!token) {
+      alert('인증 정보가 만료되었습니다. 다시 로그인 하십시오.');
+      navigate('/auth/signin');
+    }
+  }, [navigate, token]);
 
   return (
     <MainLayout>
