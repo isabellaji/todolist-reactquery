@@ -18,6 +18,7 @@ export const useDeleteTodo = (key: string) => {
   const mutation = useMutation(mutationFn, {
     onSuccess: () => {
       queryClient.invalidateQueries([key]);
+      alert('✅ 해당 항목이 삭제되었습니다.');
     },
   });
 
