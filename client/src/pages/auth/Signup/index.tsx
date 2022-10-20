@@ -60,7 +60,7 @@ export const SignupPage = () => {
                 {...register('email', {
                   required: true,
                   pattern: {
-                    value: /[\w-_.]+\@[\w]+\.[\w.]+/,
+                    value: /[\w-_.]+@[\w]+\.[\w.]+/,
                     message: '이메일 형식에 맞게 입력해 주세요',
                   },
                 })}

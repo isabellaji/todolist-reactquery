@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { authState, themeState } from 'store/atoms';
 import { Aside, StyledHeader, Title } from './style';
 import { useRecoilState } from 'recoil';
@@ -22,17 +22,10 @@ export const Header = () => {
     navigate('/auth/signin');
   };
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('todos');
-  //   !token && navigate('/auth/signin');
-  // }, []);
-
-  console.log(profile);
-
   return (
     <StyledHeader>
       <Title main={mainPage ? true : false}>
-        {signupPage ? '회원가입' : signinPage ? '로그인' : '📝 To Do List'}
+        {signupPage ? '회원가입' : signinPage ? '로그인' : `📝 ${profile.userName}'s To Do List`}
       </Title>
       <Aside>
         <button className="theme__btn" onClick={onToggleThemeMode}>
