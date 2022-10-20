@@ -9,7 +9,7 @@ export const Header = () => {
   const [profile, setProfile] = useRecoilState(authState);
   const signupPage = useMatch('/auth/signup');
   const signinPage = useMatch('/auth/signin');
-  const mainPage = useMatch('/*');
+  const mainPage = useMatch('/:id');
   const navigate = useNavigate();
 
   const onToggleThemeMode = () => {

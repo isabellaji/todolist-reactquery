@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ListItem, Modal } from 'components';
 import { RequestTodoWId, ResponseTodo } from 'types/todo';
 import { todoAPI } from 'apis/todo';
 import { MainLayout } from 'layouts';
 import { Container, CreateBtn, DescriptionSection, ListSection, Loader } from './style';
 import { useQuery } from '@tanstack/react-query';
-import { useMatch } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 
 export const TodoPage = () => {
   const match = useMatch('/*');
   const path = match?.params['*'];
+  const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
   const [editTodo, setEditTodo] = useState<RequestTodoWId>();
   const [modalVisible, setModalVisivle] = useState(false);
@@ -23,6 +24,11 @@ export const TodoPage = () => {
   const handleOpenModal = () => {
     setModalVisivle(true);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('todos');
+    !token && navigate('/auth/signin');
+  }, [navigate]);
 
   return (
     <MainLayout>
