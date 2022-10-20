@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import { todoAPI } from 'apis/todo';
 import { RequestTodo, RequestTodoWId } from 'types/todo';
+import { useCreateTodo, useUpdateTodo } from 'hooks';
 import { CloseBtn, Container, Form } from './style';
-import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface ModalProps {
   modalVisible: boolean;
@@ -21,46 +19,9 @@ export const Modal = ({
   isEdit,
   setIsEdit,
 }: ModalProps) => {
-  const queryClient = useQueryClient();
   const { register, handleSubmit, setValue } = useForm<RequestTodo>();
-
-  const createTodo = async (newTodo: RequestTodo) => {
-    try {
-      const newData = await todoAPI.create(newTodo);
-      return newData;
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        alert(error);
-      }
-    } finally {
-      handleCloseModal();
-    }
-  };
-
-  const CreateMutation = useMutation(createTodo, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['todos']);
-    },
-  });
-
-  const updateTodo = async (newTodo: RequestTodoWId) => {
-    try {
-      const newData = await todoAPI.update(newTodo);
-      return newData;
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        alert(error);
-      }
-    } finally {
-      handleCloseModal();
-    }
-  };
-
-  const UpdateMutation = useMutation(updateTodo, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['todos']);
-    },
-  });
+  const createMutation = useCreateTodo('todos');
+  const updateMutation = useUpdateTodo('todos');
 
   const handleCloseModal = () => {
     setModalVisivle(false);
@@ -71,10 +32,12 @@ export const Modal = ({
 
   const onValid = ({ title, content }: RequestTodo) => {
     if (isEdit && editTodo) {
-      UpdateMutation.mutate({ title, content, id: editTodo?.id });
+      updateMutation.mutate({ title, content, id: editTodo?.id });
       setIsEdit(false);
+      handleCloseModal();
     } else {
-      CreateMutation.mutate({ title, content });
+      createMutation.mutate({ title, content });
+      handleCloseModal();
     }
   };
 
