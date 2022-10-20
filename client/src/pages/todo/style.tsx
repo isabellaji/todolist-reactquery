@@ -10,13 +10,15 @@ export const Container = styled.div`
 
 export const ListSection = styled.section`
   width: 45%;
+  min-width: 430px;
   display: flex;
   flex-direction: column;
   border-top: 1px solid ${(props) => props.theme.borderColor};
 
   .list__wrapper {
-    width: 100%;
+    width: 80%;
     height: 100%;
+    margin: 0 auto;
     overflow-y: scroll;
   }
 `;
@@ -58,6 +60,7 @@ export const DescriptionSection = styled.section`
     width: 80%;
     margin: 1em auto;
     padding: 1.5em 2em;
+    line-height: 1.7em;
     border-radius: 0.5rem;
     background-color: ${(props) => props.theme.bgColor};
     border: 1px solid ${(props) => props.theme.borderColor};

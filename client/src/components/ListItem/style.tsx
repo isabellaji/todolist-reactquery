@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.li<{ isClicked: boolean }>`
-  width: 80%;
-  min-width: 350px;
+  width: 100%;
   margin: 1em auto;
   display: flex;
   align-items: center;
