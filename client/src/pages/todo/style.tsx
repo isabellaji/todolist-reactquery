@@ -23,6 +23,7 @@ export const ListSection = styled.section`
 
 export const ListItem = styled.li<{ isClicked: boolean }>`
   width: 80%;
+  min-width: 350px;
   margin: 1em auto;
   display: flex;
   align-items: center;
@@ -35,18 +36,24 @@ export const ListItem = styled.li<{ isClicked: boolean }>`
 
   &:hover {
     background-color: ${(props) => props.theme.accentColor};
+    color: #dcdde1;
   }
 
   a {
-    padding: 1.5em 8em 1.5em 2em;
+    width: 80%;
+    overflow: hidden;
+    padding: 1.5em 2em;
+    text-overflow: ellipsis;
   }
 
   .item__utils {
-    padding: 1.5em 2em;
-
+    width: 20%;
+    margin: 0.5em 1em;
     button {
       background-color: transparent;
       border: 0;
+      margin: 1em 0.2em;
+      padding: 0.3em;
       cursor: pointer;
     }
   }
