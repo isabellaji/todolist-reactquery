@@ -19,6 +19,5 @@ export interface ResponseSignup {
 }
 
 export interface UserProfile {
-  email: string;
   userName: string;
 }

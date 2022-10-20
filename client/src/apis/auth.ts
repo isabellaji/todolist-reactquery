@@ -6,14 +6,10 @@ const authInstance = axios.create({
 });
 
 export const authAPI = {
-  signin: (data: RequestSignin): Promise<ResponseSignin> => {
-    return authInstance.post('/users/login', data).then((res) => {
-      return res.data;
-    });
-  },
   signup: (data: RequestSignup): Promise<ResponseSignup> => {
-    return authInstance.post('/users/create', data).then((res) => {
-      return res.data;
-    });
+    return authInstance.post('/users/create', data).then((res) => res.data);
+  },
+  signin: (data: RequestSignin): Promise<ResponseSignin> => {
+    return authInstance.post('/users/login', data).then((res) => res.data);
   },
 };

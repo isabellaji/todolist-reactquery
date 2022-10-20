@@ -18,9 +18,9 @@ const localStorageEffect =
 export const authState = atom<UserProfile>({
   key: 'auth/profile',
   default: {
-    email: '',
     userName: '',
   },
+  effects: [localStorageEffect('user')],
 });
 
 export const themeState = atom({

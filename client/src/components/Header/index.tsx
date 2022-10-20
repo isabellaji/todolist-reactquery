@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { authState, themeState } from 'store/atoms';
 import { Aside, StyledHeader, Title } from './style';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { useMatch, useNavigate } from 'react-router-dom';
 
 export const Header = () => {
   const [isDark, setIsDark] = useRecoilState(themeState);
-  const setProfile = useSetRecoilState(authState);
+  const [profile, setProfile] = useRecoilState(authState);
   const signupPage = useMatch('/auth/signup');
   const signinPage = useMatch('/auth/signin');
   const mainPage = useMatch('/*');
@@ -15,11 +15,19 @@ export const Header = () => {
   const onToggleThemeMode = () => {
     setIsDark((prev) => !prev);
   };
+
   const onClickSignout = () => {
     localStorage.removeItem('todos');
-    setProfile({ email: '', userName: '' });
+    setProfile({ userName: '' });
     navigate('/auth/signin');
   };
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem('todos');
+  //   !token && navigate('/auth/signin');
+  // }, []);
+
+  console.log(profile);
 
   return (
     <StyledHeader>
