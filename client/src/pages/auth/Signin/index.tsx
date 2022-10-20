@@ -54,7 +54,6 @@ export const SigninPage = () => {
               <input
                 {...register('email', {
                   required: true,
-
                   pattern: {
                     value: /[\w-_.]+@[\w]+\.[\w.]+/,
                     message: '이메일 형식에 맞게 입력해 주세요',
