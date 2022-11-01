@@ -58,14 +58,14 @@ $ npm run install
 
 ### 실행
 
-client 폴더에서 클라이언트 실행 (port 3000)
-
-```
-$ npm run client
-```
-
 server 폴더에서 서버 실행 (port 8080)
 
 ```
 $ npm run server
+```
+
+client 폴더에서 클라이언트 실행 (port 3000)
+
+```
+$ npm run client
 ```
